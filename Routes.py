@@ -34,7 +34,7 @@ def create_blog():
     blog_schema = BlogSchema()  # creates a schema for returning the blog
 
     # returns the blog that was just created
-    output = {"New Blog Added: ": blog_schema.dump(newBlog)}
+    output = {"createdBlog": blog_schema.dump(newBlog)}
 
     return jsonify(output)
 
@@ -55,7 +55,23 @@ def update_blog(blog_id):
 
     blog_schema = BlogSchema()  # creates a schema for returning the blog
 
-    # returns the blog that was just created
-    output = {"New Blog Added: ": blog_schema.dump(blog)}
+    # returns the blog that was just eddited
+    output = {"updatedBlog": blog_schema.dump(blog)}
+
+    return jsonify(output)
+
+# Deletes a blog just from it's id
+@app.route('/blog/<int:blog_id>/delete', methods=['DELETE'])
+def delete_blog(blog_id):
+    body = request.json
+
+    blogToDelete = Blog.query.get_or_404(blog_id)
+
+    db.session.delete(blogToDelete)
+    db.session.commit()
+
+    blog_schema = BlogSchema()
+
+    output = {"deletedBlog": blog_schema.dump(blogToDelete)}
 
     return jsonify(output)

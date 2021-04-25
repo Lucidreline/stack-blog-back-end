@@ -66,3 +66,25 @@ def create_blog():
     output = {"New Blog Added: ": blog_schema.dump(newBlog)}
 
     return jsonify(output)
+
+
+# Edits an exsisting blog
+@app.route('/blog/<int:blog_id>/update', methods=['PUT'])
+def update_blog(blog_id):
+    body = request.json  # data coming in (in a dictionary)
+
+    # finds the
+    blog = Blog.query.get_or_404(blog_id)
+
+    blog.title = body['title']  # updates the data with the data coming in
+    blog.body = body['body']
+
+    db.session.add(blog)
+    db.session.commit()  # commits the new blog into the db
+
+    blog_schema = BlogSchema()  # creates a schema for returning the blog
+
+    # returns the blog that was just created
+    output = {"New Blog Added: ": blog_schema.dump(blog)}
+
+    return jsonify(output)

@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from datetime import datetime
@@ -48,4 +48,21 @@ def show_blog(blog_id):
     blogToReturn = Blog.query.get_or_404(blog_id)
     blog_schema = BlogSchema()
     output = {"blog": blog_schema.dump(blogToReturn)}
+    return jsonify(output)
+
+
+@app.route('/blog/new', methods=['POST'])  # Creates a new blog
+def create_blog():
+    body = request.json  # data coming in (in a dictionary)
+
+    # creates a new Blog using the json data
+    newBlog = Blog(title=body['title'], body=body['body'])
+    db.session.add(newBlog)  # gets the new blog ready to commit into the db
+    db.session.commit()  # commits the new blog into the db
+
+    blog_schema = BlogSchema()  # creates a schema for returning the blog
+
+    # returns the blog that was just created
+    output = {"New Blog Added: ": blog_schema.dump(newBlog)}
+
     return jsonify(output)

@@ -22,7 +22,7 @@ jobs:
         python-version: 3.6.9
     - name: Install Dependencies
       run: |
-        pip3 install -r requirements.txt
+        . env/bin/activate && pip3 install -r requirements.txt
     - name: Restart App
       run: |
         pm2 restart stack-blog-back-end

@@ -20,12 +20,12 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.6.9
-    - name: display path
+    - name: Install Dependencies
       run: |
-        pwd
-    - name: create file
+        pip3 install -r requirements.txt
+    - name: Restart App
       run: |
-        touch bobby.txt
+        pm2 restart stack-blog-back-end
 
 
       

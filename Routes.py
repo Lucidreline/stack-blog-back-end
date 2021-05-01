@@ -1,9 +1,9 @@
 from Blog import Blog, BlogSchema
 from flask import jsonify, request
-from server import db, app
+from application import db, application
 
 
-@app.route('/blogs')  # returns all blogs
+@application.route('/blogs')  # returns all blogs
 def show_blogs():
     blogsToReturn = Blog.query.all()  # grabs all blogs from database
     # turns blogs into dictionary (objects)
@@ -14,7 +14,7 @@ def show_blogs():
 
 
 # returns a blog when you give it the blog id
-@app.route('/blog/<int:blog_id>')
+@application.route('/blog/<int:blog_id>')
 def show_blog(blog_id):
     blogToReturn = Blog.query.get_or_404(blog_id)
     blog_schema = BlogSchema()
@@ -22,7 +22,7 @@ def show_blog(blog_id):
     return jsonify(output)
 
 
-@app.route('/blog/new', methods=['POST'])  # Creates a new blog
+@application.route('/blog/new', methods=['POST'])  # Creates a new blog
 def create_blog():
     body = request.json  # data coming in (in a dictionary)
 
@@ -40,7 +40,7 @@ def create_blog():
 
 
 # Edits an exsisting blog
-@app.route('/blog/<int:blog_id>/update', methods=['PUT'])
+@application.route('/blog/<int:blog_id>/update', methods=['PUT'])
 def update_blog(blog_id):
     body = request.json  # data coming in (in a dictionary)
 
@@ -61,7 +61,7 @@ def update_blog(blog_id):
     return jsonify(output)
 
 # Deletes a blog just from it's id
-@app.route('/blog/<int:blog_id>/delete', methods=['DELETE'])
+@application.route('/blog/<int:blog_id>/delete', methods=['DELETE'])
 def delete_blog(blog_id):
     body = request.json
 

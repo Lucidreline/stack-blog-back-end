@@ -1,4 +1,4 @@
-from server import db, ma
+from application import db, ma
 from datetime import datetime
 
 
